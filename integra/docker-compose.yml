@@ -1,0 +1,34 @@
+services:
+  app:
+    build: .
+    container_name: node_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_USER=ada
+      - DB_PASSWORD=P455w0rd
+      - DB_NAME=Comuna
+      - DB_PORT=5432
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ada
+      POSTGRES_PASSWORD: P455w0rd
+      POSTGRES_DB: Comuna
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
